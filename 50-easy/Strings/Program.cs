@@ -4,9 +4,9 @@ public class Program
 {
     public static void Main()
     {
-        string s = "aabb";
+        string s = "listen2: 2 n :etsil";
 
-        Console.WriteLine(FirstUniqChar(s));
+        Console.WriteLine(IsPalindrome(s));
     }
 
     /*
@@ -14,7 +14,8 @@ public class Program
         Idea: Two pointers technique.
         Complexity: O(n)
     */
-    public static void ReverseString(char[] s) {
+    public static void ReverseString(char[] s)
+    {
 
         int n = s.Length;
         int left = 0, right = n - 1;
@@ -34,7 +35,8 @@ public class Program
         Idea: Store the value on int32 (i.e int) and check for overflow by checking change at each digit reverse.
         Complexity: O(n)
     */
-    public static int Reverse(int x) {
+    public static int Reverse(int x)
+    {
 
         int res = 0, oldRes, tx = x;
 
@@ -61,7 +63,8 @@ public class Program
         Idea: Use dictionary.
         Complexity: O(n)
     */
-    public static int FirstUniqChar(string s) {
+    public static int FirstUniqChar(string s)
+    {
         Dictionary<char, int> dict = [];
 
         foreach (char ch in s)
@@ -79,4 +82,64 @@ public class Program
         return -1;
     }
 
+    /*
+        Problem: Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+        Idea: Use dictionary.
+        Complexity: O(n)
+    */
+    public static bool IsAnagram(string s, string t)
+    {
+
+        Dictionary<char, int> dict = [];
+
+        foreach (char c in s)
+        {
+            if (dict.ContainsKey(c)) dict[c] += 1;
+            else dict[c] = 1;
+        }
+
+        foreach (char c in t)
+        {
+            if (!dict.ContainsKey(c)) return false;
+            dict[c] -= 1;
+        }
+
+        foreach (int val in dict.Values)
+        {
+            if (val != 0) return false;
+        }
+
+        return true;
+    }
+
+    /*
+        Problem: A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+        Idea: Use list to remove unwanted characters and two pointers to check for palindrome.
+        Complexity: O(n)
+    */
+    public static bool IsPalindrome(string s) {
+
+        int n = s.Length, left = 0, right;
+        List<char> list = [];
+
+        for (int i = 0; i < n; i++)
+        {
+            if (s[i] >= 'A' && s[i] <= 'Z' 
+            || s[i] >= 'a' && s[i] <= 'z' 
+            || s[i] >= '0' && s[i] <= '9')
+            {
+                list.Add(char.ToLower(s[i]));
+            }
+        }
+        right = list.Count - 1;
+
+        while (left < right)
+        {
+            if (list[left] != list[right]) return false;
+            left++;
+            right--;
+        }
+
+        return true;
+    }
 }
