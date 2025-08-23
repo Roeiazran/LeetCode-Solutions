@@ -31,7 +31,7 @@ public class Program
     /*
         Problem: Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
         Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
-        Idea: Store the value on int32 (i.e int) and check for overflow by checking sign change at each digit reverse.
+        Idea: Store the value on int32 (i.e int) and check for overflow by checking change at each digit reverse.
         Complexity: O(n)
     */
     public static int Reverse(int x) {
