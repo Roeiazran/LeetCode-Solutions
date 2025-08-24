@@ -133,6 +133,7 @@ public class Program
         if (list1 == null) return list2;
         if (list2 == null) return list1;
 
+        // after this prev.val <= curr2.val
         if (list1.val < list2.val)
         {
             prev = list1;
@@ -145,17 +146,20 @@ public class Program
             curr2 = list1;
         }
 
-        // prev.val <= curr2.val <= curr1.val
         while (curr2 != null)
         {
+            // advance both curr1 and prev until prev.val <= curr2.val < curr1.val
             while (curr1 != null && curr1.val <= curr2.val)
             {
                 prev = curr1;
                 curr1 = curr1.next;
             }
 
+            // order curr2 to go between prev and curr1 and advance prev to curr2
             prev.next = curr2;
             prev = prev.next;
+
+            // move curr2 to it's next and change it to curr1.
             curr2 = prev.next;
             prev.next = curr1;
         }
