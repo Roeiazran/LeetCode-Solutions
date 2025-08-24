@@ -1,4 +1,5 @@
-﻿public class ListNode {
+﻿#pragma warning disable
+public class ListNode {
     public int val;
     public ListNode? next;
     public ListNode(int x) { val = x; }
@@ -9,10 +10,11 @@ public class Program
 {
     public static void Main()
     {
-        ListNode? list = CreateListFromArray(new int[] { 2, 4, 5, 7, 1 });
-        if (list == null) return;
+        ListNode? list2 = CreateListFromArray(new int[] {0, 0, 1, 2});
+        ListNode? list1 = CreateListFromArray(new int[] {1, 1, 2, 3 });
 
-        list = RemoveNthFromEnd(list, 1);
+        ListNode list = MergeTwoLists(list1, list2);
+
         PrintList(list);
     }
     
@@ -98,5 +100,66 @@ public class Program
         first.val = first.next.val;
         first.next = first.next.next;
         return head;
+    }
+
+    /*
+        Problem: Given the head of a singly linked list, reverse the list, and return the reversed list.
+        Idea: Traverse the list with prev, next and curr. keep the next and redirect curr.next to prev.
+        Complexity: O(n)
+    */
+    public static ListNode ReverseList(ListNode head) {
+        ListNode prev = null, curr = head, next = head?.next;
+
+        while (curr != null)
+        {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    /*
+        Problem: You are given the heads of two sorted linked lists list1 and list2.
+        Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
+        Return the head of the merged linked list.
+        Idea: Use two pointers to merge the lists like merge sort algorithm.
+        Complexity: O(n)
+    */
+    public static ListNode MergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode curr1, curr2, prev;
+
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+
+        if (list1.val < list2.val)
+        {
+            prev = list1;
+            curr1 = prev.next;
+            curr2 = list2;
+        } else 
+        {
+            prev = list2;
+            curr1 = prev.next;
+            curr2 = list1;
+        }
+
+        // prev.val <= curr2.val <= curr1.val
+        while (curr2 != null)
+        {
+            while (curr1 != null && curr1.val <= curr2.val)
+            {
+                prev = curr1;
+                curr1 = curr1.next;
+            }
+
+            prev.next = curr2;
+            prev = prev.next;
+            curr2 = prev.next;
+            prev.next = curr1;
+        }
+
+        return (list1.val < list2.val) ? list1 : list2;
     }
 }

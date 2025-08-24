@@ -8,7 +8,7 @@
     }
 
     /*
-        Problem: Reverse a given string in place.
+        Problem: Reverse a given string in place. 
         Idea: Two pointers technique.
         Complexity: O(n)
     */
