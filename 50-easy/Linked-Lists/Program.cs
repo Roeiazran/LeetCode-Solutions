@@ -5,7 +5,6 @@ public class ListNode {
     public ListNode(int x) { val = x; }
 }
 
-
 public class Program
 {
     public static void Main()
@@ -133,7 +132,7 @@ public class Program
         if (list1 == null) return list2;
         if (list2 == null) return list1;
 
-        // after this prev.val <= curr2.val
+        // after this prev.val <= curr2.val (can be simplified by using a dummy node)
         if (list1.val < list2.val)
         {
             prev = list1;
