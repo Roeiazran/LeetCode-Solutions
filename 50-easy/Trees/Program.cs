@@ -47,15 +47,6 @@ public class Program
         int right = MaxDepth(root.right);
         return Math.Max(left, right) + 1;
     }
-    public static int MaxValInTree(TreeNode root)
-    {
-        if (root == null) return int.MinValue;
-
-        int leftMax = MaxValInTree(root.left);
-        int rightMax = MaxValInTree(root.right);
-
-        return Math.Max(root.val, Math.Max(leftMax, rightMax));
-    }
 
     /*
         Problem: Given the root of a binary tree, determine if it is a valid binary search tree (BST). (left.val < root.val, i.e strictly less)
