@@ -43,6 +43,31 @@ public:
     }
 
     /*
+        Problem: Given head, the head of a linked list, determine if the linked list has a cycle in it.
+        Idea: Use slow and fast pointer, if there is a cycle it is guaranteed that fast and slow will meet.
+        Complexity: O(n) - if there is a cycle fast and slow will be met after advancing both for at most.
+        At each step when both fast and slow are in the cycle fast advance one step closer towards slow.
+        Lets denote with l the number of nodes in the list that are outside the cycle, and by m the node in it.
+        So there are (n - m) steps until slow gets into the cycle, and another O(m) steps until both will meet.
+    */
+    bool hasCycle(ListNode *head) {
+        ListNode *slow = head, *fast = head;
+        
+        if (head == nullptr || head->next == nullptr) return false;
+
+        while (fast != nullptr && fast->next != nullptr)
+        {
+            // advance fast and slow and check
+            slow = slow->next;
+            fast = fast->next->next;
+            if (slow == fast) return true;
+        }
+
+        return false;
+    }
+
+
+    /*
         Problem: Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
         Idea: Find the middle of the list and reverse each node up until the middle node, then traverse the list from
         the middle to both directions and compare values.
@@ -64,7 +89,8 @@ public:
             prev = curr;         // advance prev
             curr = next;         // advance curr
         }
-     
+        
+        // if the list length is odd skip the middle node 
         if (fast != nullptr) curr = curr->next;
         
         while (curr != nullptr)
@@ -83,11 +109,10 @@ int main(int argc, char const *argv[])
     Solution sol = Solution();
 
     vector<int> v;
-    v.push_back(3);
     v.push_back(1);
     v.push_back(2);
-    v.push_back(3);
 
     sol.CreateListFromArray(v);
+    cout << sol.hasCycle(sol.head);
     return 0;
 }
