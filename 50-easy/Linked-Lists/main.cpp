@@ -45,7 +45,7 @@ public:
     /*
         Problem: Given head, the head of a linked list, determine if the linked list has a cycle in it.
         Idea: Use slow and fast pointer, if there is a cycle it is guaranteed that fast and slow will meet.
-        Complexity: O(n) - if there is a cycle fast and slow will be met after advancing both for at most.
+        Complexity: O(n) - If there is a cycle fast and slow will be met after advancing at most O(n) steps.
         At each step when both fast and slow are in the cycle fast advance one step closer towards slow.
         Lets denote with l the number of nodes in the list that are outside the cycle, and by m the node in it.
         So there are (n - m) steps until slow gets into the cycle, and another O(m) steps until both will meet.
