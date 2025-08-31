@@ -2,7 +2,71 @@
 #include <unordered_set>
 #include <iostream>
 #include <set>
+#include <unordered_map>
 using namespace std;
+
+/*
+    Problem: Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+    Idea: Use unsorted map<string, vector<string>>. Sort each string in strs and use it as a key of the map, where the value is a vector 
+    that stores all the anagrams of the key. Finally iterate the map and group the string by the key.
+    Complexity: O(n). We have O (n * k log k) where k <= 100, thus O(n) to store each string in strs.
+ */
+vector<vector<string>> FastGroupAnagrams(vector<string>& strs) {
+
+    unordered_map<string,vector<string>> mp;
+    vector<vector<string>> res;
+
+    for (auto& str: strs) {
+        string sortedStr = str;                     
+        sort(sortedStr.begin(), sortedStr.end()); 
+        mp[sortedStr].push_back(str);
+    }
+
+    for (auto& [key, group]: mp) {
+        res.push_back(move(group)); // Move the group (do not make a copy) into res
+    }
+
+    return res;
+}
+
+/*
+    Problem: Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+    Idea: Sort each string alphabetically, use a sorted array of pairs in the form (str, sortedstr) for each str in strs
+    to do a linear pass on the array and group together the same strings.
+    Complexity: O(n log n), We have O (n * k log k) where k <= 100, thus O(n) to store each string in strs, then sorting strs in O(n log n).
+ */
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    vector<vector<string>> res;
+    vector<pair<string,string>> sortedCopy;
+    size_t n = strs.size();
+    
+    if (n == 0) return res;
+
+    // Populate sortedCopy with pairs
+    for (auto str:strs) {
+        string temp = str;                      // Save str before sorting it
+        sort(str.begin(), str.end());           // sort str
+        sortedCopy.push_back({ str , temp});    // Store the pair (str, sortedStr)    
+    }
+
+    sort(sortedCopy.begin(), sortedCopy.end()); // Sort the pairs by first and then by second
+
+    vector<string> temp; // Used to store each groupe of strings
+    temp.push_back(sortedCopy[0].second); // Add to first group the first item in the sorted copy
+
+    for (int i = 1; i < n; i++) {
+
+        // Check whether to start a new group
+        if (sortedCopy[i].first != sortedCopy[i - 1].first) {
+            res.push_back(temp);    // Insert the group to the result
+            temp.clear();           // Clear the group vector         
+        }
+
+        temp.push_back(sortedCopy[i].second); // Insert new string to the group
+    }
+    res.push_back(temp); // Remember to insert last group into the result
+    return res;
+}
 
 
 /*
@@ -85,19 +149,22 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 
 int main(int argc, char const *argv[])
 {
-    vector<vector<int>> v;
+    vector<string> v;
 
-    v.push_back({1,2,3,4});
-    v.push_back({5,0,7,8});
-    v.push_back({0,10,11,12});
-    v.push_back({13,14,15,0});
-    setZeroes(v);
+    v.push_back("eat");
+    v.push_back("aet");
+    v.push_back("tan");
+    v.push_back("tea");
+    v.push_back("nat");
+    v.push_back("bat");
 
-    for (auto& row: v) {
-        for (auto& col : row) {
-            cout << col << " ";
+    vector<vector<string>> res = groupAnagrams(v);
+
+    for (auto& s: res) {
+        for (auto& b: s) {
+            cout << b << "- - ";
         }
+        cout << endl;
     }
-
     return 0;
 }
