@@ -81,7 +81,7 @@
     /*
         Problem: Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
         You must implement a solution with a linear runtime complexity and use only constant extra space.
-        Idea: Xor operation propeties are: commutativity, associativity, a^a = 0, a^0 = a.
+        Idea: Xor operation properties are: commutativity, associativity, a^a = 0, a^0 = a.
         Complexity O(n)
     */
     public static int SingalNumber(int[] nums)

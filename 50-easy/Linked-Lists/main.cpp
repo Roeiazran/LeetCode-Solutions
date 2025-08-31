@@ -66,7 +66,6 @@ public:
         return false;
     }
 
-
     /*
         Problem: Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
         Idea: Find the middle of the list and reverse each node up until the middle node, then traverse the list from
@@ -99,7 +98,6 @@ public:
             curr = curr->next;
             prev = prev->next;
         }
-
         return true;
     }
 };

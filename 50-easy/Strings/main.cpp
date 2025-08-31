@@ -1,14 +1,53 @@
 #include <iostream>
 #include <climits>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 int myAtoi(string s);
 int strStr(string haystack, string needle);
+string longestCommonPrefix(vector<string>& strs);
 
 int main(int argc, char const *argv[])
 {   
+    vector<string> strs;
+    strs.push_back("Banana");
+    strs.push_back("Apple");
+    strs.push_back("Mango");
+
+    longestCommonPrefix(strs);
     return 0;
 }
+
+/*
+    Problem: Write a function to find the longest common prefix string amongst an array of strings.
+    Complexity: O(n) Where n is the number of all characters in the input
+*/
+string longestCommonPrefix(vector<string>& strs) {
+
+    int n = strs.size();
+    size_t minLength;
+    string prefix = "";
+
+    char ch; // temporary variable used to stores the character at index i
+    if (n == 0) return "";
+    minLength = strs.at(0).size();
+    // find the minimum length of any string in strs
+    for (auto& str: strs) minLength = min(str.size(), minLength);
+
+    for (int i = 0; i < minLength; i++)
+    {
+         ch = strs[0][i];
+        // check for common prefix on all string in strs
+        for (int j = 1; j < n; j++) if (strs[j][i] != ch) return prefix;
+
+        // append the common character
+        prefix.push_back(ch);
+    }
+
+    return prefix;
+}
+
 
 /*
     Problem: Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.

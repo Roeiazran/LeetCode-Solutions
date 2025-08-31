@@ -37,6 +37,8 @@ public class Program
 
     /*
         Problem: Given the root of a binary tree, return its maximum depth.
+        Idea: The depth of any node is the maximum depth between it's left and right
+        child nodes + 1.
         Complexity: O(n)
     */
     public static int MaxDepth(TreeNode root) {
@@ -49,35 +51,37 @@ public class Program
     }
 
     /*
-        Problem: Given the root of a binary tree, determine if it is a valid binary search tree (BST). (left.val < root.val, i.e strictly less)
+        Problem: Given the root of a binary tree, determine whether it is a valid binary search tree (BST). (left.val < root.val - strictly less)
         Idea: Use a helper function, pass to it the range of values [min, max] that the subtree must be in. On left traversal update max and on
         right traversal update min.
         Complexity: O(n)
     */
-    public bool IsValidBST(TreeNode root) {
+    public static bool IsValidBST(TreeNode root) {
         
-        // case: ont root node with int.min/max value.
+        // Case: one root node is trivially true
         if (root.left == null && root.right == null) return true;
 
-        // using long since 2^32 <= node.val <= 2^32 - 1 and if fails the check when the node value in int.max/min
+        // Using long since 2^32 <= node.val <= 2^32 - 1
         return ValidateBST(root, long.MinValue, long.MaxValue);
     }
 
     /*
         Helper method to IsValidBST(TreeNode root)
     */
-    public bool ValidateBST(TreeNode root, long minVal, long maxValue)
+    public static bool ValidateBST(TreeNode root, long minVal, long maxValue)
     {
+        // Base case: the bottom of the tree
         if (root == null) return true;
 
+        // Check if the node value is in it's value boundaries
         if (root.val >= maxValue || root.val <= minVal) return false;
 
+        // Recursively continue to left and right subtrees
         bool isLeftValid = ValidateBST(root.left, minVal, root.val);
         bool isRightValid = ValidateBST(root.right, root.val, maxValue);
 
+        // Return the operation AND on both sides
         return isLeftValid && isRightValid;
     }
-
-    
 
 }
