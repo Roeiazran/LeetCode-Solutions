@@ -37,7 +37,14 @@ public:
     }
 
     /*
-        Helper for sortedArrayToBst
+        Helper for sortedArrayToBst.
+        We exploit the fact the array nums is sorted, which means we can
+        turn the array into BFS by making the middle value as the root and 
+        recursively construct the left and right subtrees.
+        Time Complexity: O(n) - In the recursive tree we have n nodes, at level k we have 2^k calls for creating new node.
+        So it's basically Geometric series: 2^0 + 2^1 + ... + 2^k, where k = log(n), which is actually: 1 + 2 + 4 + .. + n = O(n).
+        Another way with the Master Therem: T(n) = 2T(n/2) + O(1) = O(n).
+        Space Complexity: O(log(n)) For the recursive calls
     */
    TreeNode* sortedArrayToBSTHelper(vector<int>& nums, int left, int right) {
 
