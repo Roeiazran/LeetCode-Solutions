@@ -150,32 +150,30 @@
     }
 
     /*
-        Problem: You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order.
+        Problem: You are given a large integer represented as an integer array digits,
+        where each digits[i] is the i'th digit of the integer. The digits are ordered
+        from most significant to least significant in left-to-right order.
         Increment the large integer by one and return the resulting array of digits.
-        Complexity: O(n)
+
+        Idea: Walk through the digits array from right to left and compute the digits[i] and the carry.
+
+        Time Complexity: O(n)
+        Space Complexity: O(1)
     */
     public static int[] PlusOne(int[] digits) {
 
-        int n = digits.Length, carry = 0;
-        int add;
+        int n = digits.Length;
+
+        int carry = 1;  // Start with carry = 1 to perform the +1 operation
+        int sum;        // Used to sum the value of digits[i]
 
         for (int i = n - 1; i >= 0; i--)
         {
-            add = digits[i] + carry;
+            sum = digits[i] + carry;
+            digits[i] = sum % 10; 
+            carry = sum / 10;
 
-            if (i == n - 1)  add++;
-     
-            if (add == 10)
-            {
-                carry = 1;
-                digits[i] = 0;
-            }
-            else
-            {
-                digits[i]++;
-                carry = 0;
-                break;
-            }
+            if (carry == 0) break; // No need to continue.
         }
 
         if (carry == 1)  return [1, .. digits];
@@ -185,38 +183,36 @@
     /*
         Problem: Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
         Note that you must do this in-place without making a copy of the array.
-        Idea: Two pointer approach.
-        Complexity: O(n)
+
+        Idea: Walk through nums and insert to the start each non-zero item, then fill the rest with zeros.
+
+        Time Complexity: O(n)
+        Space Complexity: O(1)
     */
     public static void MoveZeroes(int[] nums) {
 
-        int n = nums.Length, right, left = 0, temp;
+        int n = nums.Length, left = 0;
 
-        while (left < n && nums[left] != 0) left++;
-
-        right = left + 1;
-        while (right < n && nums[right] == 0) right++;
-
-        while (right < n && left < n)
-        {
-            if (nums[left] != 0) left++;
-            else if (nums[right] == 0) right++;
-            else 
+        for (int right = 0; right < n; right++) {
+            if (nums[right] != 0) 
             {
-                temp = nums[left];
                 nums[left] = nums[right];
-                nums[right] = temp;
                 left++;
-                right++;
             }
+        }
+        while (left < n) {
+            nums[left] = 0;
+            left++;
         }
     }
 
     /*
         Problem: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. 
         You may assume that each input would have exactly one solution, and you may not use the same element twice.
-        Idea: Use Dictionary <item, index> looking for target - item in the dictionary.
-        Complexity: O(n)
+        Idea: Use Dictionary <item, index>, iterate through nums looking for target - item in the dictionary.
+
+        Time Complexity: O(n)
+        Space Complexity: O(n)
     */
     public static int[] TwoSum(int[] nums, int target) {
         Dictionary<int, int> map = [];
@@ -224,50 +220,48 @@
 
         for (int i = 0; i < n; i++)
         {
-            int key = target - nums[i];
-            if (map.TryGetValue(key, out int value)) return [value, i];
+            int complement = target - nums[i];
+            if (map.TryGetValue(complement, out int value)) return [value, i];
             else map.TryAdd(nums[i], i);
         }
 
         return [];
     }
+
     /*
         Problem: Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the rules.
         Complexity: O(n^2)
     */
     public static bool IsValidSudoku(char[][] board) {
-        HashSet<int> set = [];
+        HashSet<char> set = [];
         int n = 9;
 
-        // check rows
+        // Check rows
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
-                if (board[i][j] == '.') continue;
-
-                if (set.Contains(board[i][j])) return false;
-                set.Add(board[i][j]);
+                if (board[i][j] == '.') continue;               // Skip '.'
+                if (set.Contains(board[i][j])) return false;    // Already ween this number
+                set.Add(board[i][j]);                           // Number wasn't seen so far
             }
 
-            set.Clear();
+            set.Clear(); // Clear for the next row
         }
 
-        // check columns
+        // Check columns
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
                 if (board[j][i] == '.') continue;
-
                 if (set.Contains(board[j][i])) return false;
                 set.Add(board[j][i]);
             }
-            
             set.Clear();
         }
 
-        // check squares
+        // Check squares
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -276,7 +270,7 @@
                 {
                     int ji = j + i / 3 * 3;
                     int ki = k + i % 3 * 3;
-                    int b = board[ji][ki];
+                    char b = board[ji][ki];
 
                     if (b == '.') continue;
 
