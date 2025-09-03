@@ -47,11 +47,13 @@ public class Program
     }
 
     /*
-        Problem: There is a singly-linked list head and we want to delete a node node in it.
-        You are given the node to be deleted node. You will not be given access to the first node of head.
-        Idea: Since we getting the node itself we can't just change it's prev next ptr thus we need to replace
-        the given node with the node to it's right.
-        Complexity: O(1)
+        Problem: There is a singly-linked list head and we want to delete a node in it.
+        You are given the node to be deleted. You will not be given access to the first node of the list.
+
+        Idea: Since we getting the node itself we can't simply relink the nodes, we need to create
+        a chain effect bringing the next node forwards.
+
+        Time Complexity: O(1)
     */
     public static void DeleteNode(ListNode node) {
         
@@ -62,49 +64,41 @@ public class Program
     }
 
     /*
-        Problem: Given the head of a linked list, remove the nth node from the end of the list and return its head.
+        Problem: Given the head of a linked list, remove the n'th node from the end of the list and return its head.
+
         Idea: Use two pointers that has gap of n between them, and when the last is at the end of the list 
         the first will be at the deleted node.
-        Complexity: O(n)
+
+        Time Complexity: O(n)
+        Space Complexity: O(1)
     */
     public static ListNode RemoveNthFromEnd(ListNode head, int n) {
-        ListNode first = head, last = head, prev;
+        // Create a dummy previous head
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
 
-        // only one node in the list
-        if (head.next == null) 
-        {
-            head = null;
-            return head;
-        }
+        ListNode first = dummy, last = head;
 
-        // deleting the last on the list
-        if (n == 1)
-        {
-            while (last.next.next != null) last = last.next;
-            last.next = null;
-            return head;
-        }
-
-        // moving last forward so that first will point to the deleted node
-        while (n > 0) 
-        {
-            n--;
-            last = last.next;
-        }
+        // Move last pointer n steps so the first stops before the node to delete
+        for (int i = 0; i < n; i++) last = last.next;
         
-        // moving last and first together
-        while (last != null) (last, first) = (last.next, first.next);
+        // Move both until last reached the end
+        while (last != null) {
+            last = last.next;
+            first = first.next;
+        }
 
-        // deleting a node that is not the last on the list, in a list that has more than one node
-        first.val = first.next.val;
-        first.next = first.next.next;
-        return head;
+        first.next = first.next.next; // Skip the deleted node
+        return dummy.next;
     }
 
     /*
         Problem: Given the head of a singly linked list, reverse the list, and return the reversed list.
+
         Idea: Traverse the list with prev, next and curr. keep the next and redirect curr.next to prev.
-        Complexity: O(n)
+
+        Time Complexity: O(n)
+        Space Complexity: O(1)
     */
     public static ListNode ReverseList(ListNode head) {
         ListNode prev = null, curr = head, next = head?.next;
@@ -123,46 +117,33 @@ public class Program
         Problem: You are given the heads of two sorted linked lists list1 and list2.
         Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
         Return the head of the merged linked list.
-        Idea: Use two pointers to merge the lists like merge sort algorithm.
-        Complexity: O(n)
+
+        Idea: We use a dummy node to help with the new list building logic. We initialize a tail node
+        to dummy, and advance the tail node to the list node with the lower value.
+        Repeating that login we create a list and returning dummy.next.
+        
+        Time Complexity: O(n + m)
+        Space Complexity: O(1)
     */
     public static ListNode MergeTwoLists(ListNode list1, ListNode list2) {
-        ListNode curr1, curr2, prev;
 
-        if (list1 == null) return list2;
-        if (list2 == null) return list1;
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
 
-        // after this prev.val <= curr2.val (can be simplified by using a dummy node)
-        if (list1.val < list2.val)
-        {
-            prev = list1;
-            curr1 = prev.next;
-            curr2 = list2;
-        } else 
-        {
-            prev = list2;
-            curr1 = prev.next;
-            curr2 = list1;
-        }
+        while (list1 != null && list2 != null) {
 
-        while (curr2 != null)
-        {
-            // advance both curr1 and prev until prev.val <= curr2.val < curr1.val
-            while (curr1 != null && curr1.val <= curr2.val)
-            {
-                prev = curr1;
-                curr1 = curr1.next;
+            if (list1.val > list2.val) {
+                tail.next = list1;
+                list1 = list1.next;
             }
-
-            // order curr2 to go between prev and curr1 and advance prev to curr2
-            prev.next = curr2;
-            prev = prev.next;
-
-            // move curr2 to it's next and change it to curr1.
-            curr2 = prev.next;
-            prev.next = curr1;
+            else {
+                tail.next = list2;
+                list2 = list2.next;
+            }
+            tail = tail.next;
         }
+        tail.next = (list1 == null) ? list2 : list1;
 
-        return (list1.val < list2.val) ? list1 : list2;
+        return dummy.next;
     }
 }
