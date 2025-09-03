@@ -45,31 +45,44 @@ public:
     /*
         Problem: Given head, the head of a linked list, determine if the linked list has a cycle in it.
         Idea: Use slow and fast pointer, if there is a cycle it is guaranteed that fast and slow will meet.
-        Complexity: O(n) - If there is a cycle fast and slow will be met after advancing at most O(n) steps.
-        At each step when both fast and slow are in the cycle fast advance one step closer towards slow.
-        Lets denote with l the number of nodes in the list that are outside the cycle, and by m the node in it.
-        So there are (n - m) steps until slow gets into the cycle, and another O(m) steps until both will meet.
+
+        Complexity: O(n) - If a cycle exists it means fast and slow will meet after at most O(n) steps.
+
+        When both slow and fast in the cycle, fast advance towards slow one step at a time. This mean
+        that after C steps they'll meet.
+
+        Lets denote with l the number of nodes in the list that are outside the cycle, and by C the node in it.
+        So there are (n - m) steps until slow goes inside the cycle, and another C steps until both will meet.
     */
     bool hasCycle(ListNode *head) {
         ListNode *slow = head, *fast = head;
         
+        // If list is empty or has only one node, no cycle possible
         if (head == nullptr || head->next == nullptr) return false;
 
+        // Keep moving until fast pointer reaches the end
         while (fast != nullptr && fast->next != nullptr)
         {
-            // advance fast and slow and check
+            // Move slow one step
             slow = slow->next;
+
+            // Move fast two steps
             fast = fast->next->next;
+
+            // If they meet, cycle exists
             if (slow == fast) return true;
         }
 
+        // Fast reached the end, no cycle
         return false;
     }
 
     /*
         Problem: Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
-        Idea: Find the middle of the list and reverse each node up until the middle node, then traverse the list from
-        the middle to both directions and compare values.
+
+        Idea: Find the middle node with the help of slow and fast pointers, doing so while also 
+        reversing the first half of the list. Then Compare the two halves node by node.
+
         Time Complexity: O(n)
         Space Complexity: O(1)
     */
