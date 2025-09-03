@@ -66,8 +66,8 @@ public class Program
     /*
         Problem: Given the head of a linked list, remove the n'th node from the end of the list and return its head.
 
-        Idea: Use two pointers that has gap of n between them, and when the last is at the end of the list 
-        the first will be at the deleted node.
+        Idea: We use two pointers that has gap of n nodes between them. We use a dummy node y serving as a previous
+        pointer to the head to simplify the deletion.
 
         Time Complexity: O(n)
         Space Complexity: O(1)
