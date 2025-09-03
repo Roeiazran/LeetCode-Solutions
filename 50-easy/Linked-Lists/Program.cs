@@ -7,45 +7,6 @@ public class ListNode {
 
 public class Program
 {
-    public static void Main()
-    {
-        ListNode? list2 = CreateListFromArray(new int[] {0, 0, 1, 2});
-        ListNode? list1 = CreateListFromArray(new int[] {1, 1, 2, 3 });
-
-        ListNode list = MergeTwoLists(list1, list2);
-
-        PrintList(list);
-    }
-    
-    /*
-        Utils: Creates a list from integers array.
-    */
-    public static ListNode? CreateListFromArray(int[] arr)
-    {
-        int n = arr.Length;
-        if (n == 0) return null;
-
-        ListNode head = new ListNode(arr[0]);
-        ListNode tempHead = head;
-        for (int i = 1; i < n; i++)
-        {
-            tempHead.next = new ListNode(arr[i]);
-            tempHead = tempHead.next;
-        }
-
-        tempHead.next = null;
-        return head;
-    }
-
-    public static void PrintList(ListNode? list)
-    {
-        while (list != null) 
-        {
-            Console.WriteLine(list.val);
-            list = list.next;
-        }
-    }
-
     /*
         Problem: There is a singly-linked list head and we want to delete a node in it.
         You are given the node to be deleted. You will not be given access to the first node of the list.
@@ -145,5 +106,45 @@ public class Program
         tail.next = (list1 == null) ? list2 : list1;
 
         return dummy.next;
+    }
+
+    /* 
+    =================
+        Utils
+    =================
+    */
+      public static void Main()
+    {
+        ListNode? list2 = CreateListFromArray(new int[] {0, 0, 1, 2});
+        ListNode? list1 = CreateListFromArray(new int[] {1, 1, 2, 3 });
+
+        ListNode list = MergeTwoLists(list1, list2);
+
+        PrintList(list);
+    }
+    public static ListNode? CreateListFromArray(int[] arr)
+    {
+        int n = arr.Length;
+        if (n == 0) return null;
+
+        ListNode head = new ListNode(arr[0]);
+        ListNode tempHead = head;
+        for (int i = 1; i < n; i++)
+        {
+            tempHead.next = new ListNode(arr[i]);
+            tempHead = tempHead.next;
+        }
+
+        tempHead.next = null;
+        return head;
+    }
+
+    public static void PrintList(ListNode? list)
+    {
+        while (list != null) 
+        {
+            Console.WriteLine(list.val);
+            list = list.next;
+        }
     }
 }

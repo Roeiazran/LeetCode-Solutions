@@ -1,9 +1,5 @@
 ﻿public class Program
 {
-    public static void Main()
-    {
-    }
-
     /*
         Problem desc: Given a sorted array nums, remove the duplicates in-place such that
         each element appears only once and return the new length.
@@ -280,7 +276,6 @@
             }
             set.Clear();
         }
-
         return true;
     }
 }

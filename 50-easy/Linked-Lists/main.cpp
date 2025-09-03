@@ -13,34 +13,7 @@ struct ListNode {
 class Solution {
 
 public:
-
     ListNode * head;
-    Solution(){};
-    /*
-        Utils: Creates a list from integers array.
-    */
-    void CreateListFromArray(vector<int> arr)
-    {
-        int n = arr.size();
-        if (n == 0) return;
-
-        head = new ListNode(arr[0], nullptr);
-        ListNode* thead = head;
-        for (int i = 1; i < n; i++)
-        {
-           (*head).next = new ListNode(arr[i], nullptr);
-            head = head->next;
-        }
-        head = thead;
-    }
-    void printList(ListNode *head)
-    {
-        while (head != nullptr)
-        {
-            cout << (*head).val << " ";
-            head = head->next;
-        }
-    }
 
     /*
         Problem: Given head, the head of a linked list, determine if the linked list has a cycle in it.
@@ -90,9 +63,11 @@ public:
 
         ListNode *fast, * prev = nullptr, *curr = head, *next;
 
+        // If the list is empty or has only one node, it is already palindrome
         if (head == nullptr || head->next == nullptr) return true;
-
         fast = head;
+
+        // Find middle node
         while (fast != nullptr && fast->next != nullptr)
         {
             fast = fast->next->next;   // advance fast pointer
@@ -101,10 +76,11 @@ public:
             prev = curr;         // advance prev
             curr = next;         // advance curr
         }
-        
-        // if the list length is odd skip the middle node 
+    
+        // If the list has odd length, the middle node needs to be skipped
         if (fast != nullptr) curr = curr->next;
         
+        // Compare both halves of the list
         while (curr != nullptr)
         {
             if (curr->val != prev->val) return false;
@@ -113,6 +89,35 @@ public:
         }
         return true;
     }
+
+    /* 
+        =================
+            Utils
+        =================
+    */
+    void CreateListFromArray(vector<int> arr)
+    {
+        int n = arr.size();
+        if (n == 0) return;
+
+        head = new ListNode(arr[0], nullptr);
+        ListNode* thead = head;
+        for (int i = 1; i < n; i++)
+        {
+           (*head).next = new ListNode(arr[i], nullptr);
+            head = head->next;
+        }
+        head = thead;
+    }
+    void printList(ListNode *head)
+    {
+        while (head != nullptr)
+        {
+            cout << (*head).val << " ";
+            head = head->next;
+        }
+    }
+
 };
 
 int main(int argc, char const *argv[])
