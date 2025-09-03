@@ -8,7 +8,8 @@ bool isBadVersion(int version);
 /*
     Problem: Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
     Idea: We use binary search to narrowing down the search by half each time.
-    Complexity: O(log(n)).
+    Time Complexity: O(log(n)).
+    Space Complexity: O(1)
 */
 int firstBadVersion(int n) {
     int left = 1, right = n, middle;
@@ -34,7 +35,8 @@ int firstBadVersion(int n) {
     Merge nums1 and nums2 into a single array sorted in non-decreasing order.
 
     Idea: We walk through both arrays from the end usign two pointers.
-    Complexity: O(n + m)
+    Time Complexity: O(n + m)
+    Space Complexity: O(1)
 */
 void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
     
