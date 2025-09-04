@@ -78,16 +78,10 @@ public class Program
         return isLeftValid && isRightValid;
     }
 
-    public static void Main()
-    {
-        int?[] arr = { 5, 1, 10, null, null, 3, 6 };
-        TreeNode tree = BuildTree(arr);
-
-        Console.WriteLine(IsValidBST(tree));
-    }
-
-    /*
-        Util: Build binary tree from array (heap style).
+    /* 
+    =================
+    Tests helpers
+    =================
     */
     public static TreeNode BuildTree(int?[] arr, int i = 0)
     {

@@ -4,21 +4,6 @@
 #include <algorithm>
 using namespace std;
 
-int myAtoi(string s);
-int strStr(string haystack, string needle);
-string longestCommonPrefix(vector<string>& strs);
-
-int main(int argc, char const *argv[])
-{   
-    vector<string> strs;
-    strs.push_back("Banana");
-    strs.push_back("Apple");
-    strs.push_back("Mango");
-
-    longestCommonPrefix(strs);
-    return 0;
-}
-
 /*
     Problem: Write a function to find the longest common prefix string amongst an array of strings.
 

@@ -13,8 +13,7 @@ struct ListNode {
 class Solution {
 
 public:
-    ListNode * head;
-
+    
     /*
         Problem: Given head, the head of a linked list, determine if the linked list has a cycle in it.
         Idea: Use slow and fast pointer, if there is a cycle it is guaranteed that fast and slow will meet.
@@ -91,10 +90,11 @@ public:
     }
 
     /* 
-        =================
-            Utils
-        =================
+    =================
+    Tests helpers
+    =================
     */
+    ListNode * head;
     void CreateListFromArray(vector<int> arr)
     {
         int n = arr.size();
@@ -117,18 +117,4 @@ public:
             head = head->next;
         }
     }
-
 };
-
-int main(int argc, char const *argv[])
-{
-    Solution sol = Solution();
-
-    vector<int> v;
-    v.push_back(1);
-    v.push_back(2);
-
-    sol.CreateListFromArray(v);
-    cout << sol.hasCycle(sol.head);
-    return 0;
-}

@@ -16,7 +16,6 @@ struct TreeNode {
 class Solution {
 
 public:
-    TreeNode *tree;
 
     /*
         Helper for sortedArrayToBst.
@@ -132,9 +131,12 @@ public:
         return isMirror(root->left, root->right);
     }
 
-    /*
-        Util: Build binary tree from array (heap style).
+    /* 
+    =================
+    Tests helpers
+    =================
     */
+    TreeNode *tree;
     TreeNode * BuildTree(vector<optional<int>> arr, int i = 0)
     {
         // Bast case: out of the array bounds, null pointer
@@ -150,26 +152,3 @@ public:
     }
 
 };
-
-int main(int argc, char const *argv[])
-{
-    Solution sol = Solution();
-    vector<optional<int>> v;
-    v.push_back(2);
-    v.push_back(3);
-    v.push_back(NULL);
-    v.push_back(4);
-
-    sol.tree = sol.BuildTree(v);
-
-    vector<vector<int>> res = sol.levelOrder(sol.tree);
-
-    for (auto& v : res) {
-        for (auto& b : v) {
-            cout << b << " ";
-        }
-
-        cout << endl;
-    }
-    return 0;
-}

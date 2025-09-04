@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-// Given util function for firstBadVersion
+// Given as a utility function for firstBadVersion
 bool isBadVersion(int version);
 
 /*
@@ -65,14 +65,3 @@ void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
         n2 -= 1;
     }
 }
-
-
-int main(int argc, char const *argv[])
-{
-    cout << firstBadVersion(212675);
-    return 0;
-}
-
-
-
-

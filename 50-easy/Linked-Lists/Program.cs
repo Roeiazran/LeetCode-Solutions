@@ -110,18 +110,9 @@ public class Program
 
     /* 
     =================
-        Utils
+    Tests helpers
     =================
     */
-      public static void Main()
-    {
-        ListNode? list2 = CreateListFromArray(new int[] {0, 0, 1, 2});
-        ListNode? list1 = CreateListFromArray(new int[] {1, 1, 2, 3 });
-
-        ListNode list = MergeTwoLists(list1, list2);
-
-        PrintList(list);
-    }
     public static ListNode? CreateListFromArray(int[] arr)
     {
         int n = arr.Length;
@@ -138,7 +129,6 @@ public class Program
         tempHead.next = null;
         return head;
     }
-
     public static void PrintList(ListNode? list)
     {
         while (list != null) 
