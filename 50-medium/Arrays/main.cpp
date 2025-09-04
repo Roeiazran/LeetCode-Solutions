@@ -7,9 +7,15 @@ using namespace std;
 
 /*
     Problem: Given an array of strings strs, group the anagrams together. You can return the answer in any order.
-    Idea: Use unsorted map<string, vector<string>>. Sort each string in strs and use it as a key of the map, where the value is a vector 
-    that stores all the anagrams of the key. Finally iterate the map and group the string by the key.
-    Complexity: O(n). We have O (n * k log k) where k <= 100, thus O(n) to store each string in strs.
+    Idea: Use unsorted map<string, vector<string>>, the map will have as key the sorted string, and as value
+    the vector of all the anagrams of that string.
+
+    Time Complexity: O(n). We have O (n * k log k) where k <= 100, thus O(n) to sort each string in strs.
+    Then another O(n) to push the groups into the result.
+    Space complexity: O(). The map stores n strings as keys and another n strings as values, each 
+    string of size k <= 100, thus in total we have O(nk) = O(n) space complexity.
+    Note: The groups don't get copied into the result array, rather they are transferred as the same
+    object, so no extra space is required.
  */
 vector<vector<string>> FastGroupAnagrams(vector<string>& strs) {
 
@@ -17,7 +23,7 @@ vector<vector<string>> FastGroupAnagrams(vector<string>& strs) {
     vector<vector<string>> res;
 
     for (auto& str: strs) {
-        string sortedStr = str;                     
+        string sortedStr = str;                 
         sort(sortedStr.begin(), sortedStr.end()); 
         mp[sortedStr].push_back(str);
     }
@@ -73,11 +79,10 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
         group.push_back(sortedCopy[i].second); // Insert next string to the group
     }
 
-    // Insert last group into the result array
+    // Insert the last group into the result array
     res.push_back(group);
     return res;
 }
-
 
 /*
     Problem: Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
@@ -90,12 +95,13 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
 void setZeroes(vector<vector<int>>& matrix) {
     size_t rows = matrix.size();
     size_t cols = matrix[0].size();
-    bool firstRowZero = false, firstColZero = false; // Booleans indicates whether the first row and column should be zeros
+    bool firstRowZero = false, firstColZero = false; // Booleans indicators whether the first row and column should be zeros
 
+    // Search for a zero in the first row and column of the matrix
     for (int i = 0; i < cols; i++) if (matrix[0][i] == 0) firstRowZero = true;
     for (int i = 0; i < rows; i++) if (matrix[i][0] == 0) firstColZero = true;
 
-    // Fill first row and columns with marks
+    // Fill the first row and column with marks
     for (int i = 1; i < rows; i++) {
         for (int j = 1; j < cols; j++) {
             if (matrix[i][j] == 0) {
@@ -113,10 +119,11 @@ void setZeroes(vector<vector<int>>& matrix) {
         }
     }
 
-    // Check if the first row or column should be set to zero
+    // Check if the first column should be set to zero
     if (firstColZero) {
         for (int i = 0; i < rows; i++) matrix[i][0] = 0;
     }
+    // Check if the first row should be set to zero
     if (firstRowZero) {
         for (int i = 0; i < cols; i++) matrix[0][i] = 0;
     }
