@@ -31,9 +31,17 @@ vector<vector<string>> FastGroupAnagrams(vector<string>& strs) {
 
 /*
     Problem: Given an array of strings strs, group the anagrams together. You can return the answer in any order.
-    Idea: Sort each string alphabetically, use a sorted array of pairs in the form (str, sortedstr) for each str in strs
-    to do a linear pass on the array and group together the same strings.
-    Complexity: O(n log n), We have O (n * k log k) where k <= 100, thus O(n) to store each string in strs, then sorting strs in O(n log n).
+    Idea: Sort each string alphabetically, use a sorted array of pairs in the form (str, sortedstr), for each str in strs
+    do a linear pass on the array and group together the same strings.
+    
+    Time Complexity: O(nlog(n)): We have O(n * k * log(k)) where k <= 100, thus O(n) to sort each string in strs,
+    then sorting strs itself will is O(n log(n) * k) time, because compering the two sorted string will take O(k)
+    but because k <= 100 we get time complexity of O(n log(n)), next we compare the string again n times therefor 
+    another O(nk), and in total we get the time complexity of O(n log(n)).
+
+    Space complexity: O(n): sortedCopy stores n pairs of strings each of length k, thus O(nk), then res
+    stores n strings (as groups) each has length k, thus we get O(nk) as well, and because k <= 100 the total space
+    used is O(n).
  */
 vector<vector<string>> groupAnagrams(vector<string>& strs) {
     vector<vector<string>> res;
@@ -42,29 +50,31 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
     
     if (n == 0) return res;
 
-    // Populate sortedCopy with pairs
+    // Populate sortedCopy
     for (auto str:strs) {
-        string temp = str;                      // Save str before sorting it
-        sort(str.begin(), str.end());           // sort str
-        sortedCopy.push_back({ str , temp});    // Store the pair (str, sortedStr)    
+        string original = str;                      // Save str before sorting it
+        sort(str.begin(), str.end());               // Sort str
+        sortedCopy.push_back({ str , original });   // Store the pair (sortedStr, str)    
     }
 
     sort(sortedCopy.begin(), sortedCopy.end()); // Sort the pairs by first and then by second
 
-    vector<string> temp; // Used to store each groupe of strings
-    temp.push_back(sortedCopy[0].second); // Add to first group the first item in the sorted copy
+    vector<string> group;                   // Stores group of anagrams
+    group.push_back(sortedCopy[0].second);  // Add the first str to the group
 
     for (int i = 1; i < n; i++) {
 
-        // Check whether to start a new group
+        // Two consecutive strings are not equal, create new group 
         if (sortedCopy[i].first != sortedCopy[i - 1].first) {
-            res.push_back(temp);    // Insert the group to the result
-            temp.clear();           // Clear the group vector         
+            res.push_back(group);    // Insert the group to the result
+            group.clear();           // Clear the group         
         }
 
-        temp.push_back(sortedCopy[i].second); // Insert new string to the group
+        group.push_back(sortedCopy[i].second); // Insert next string to the group
     }
-    res.push_back(temp); // Remember to insert last group into the result
+
+    // Insert last group into the result array
+    res.push_back(group);
     return res;
 }
 
