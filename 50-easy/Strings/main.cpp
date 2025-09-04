@@ -99,6 +99,9 @@ int strStr(string haystack, string needle) {
     3. Conversion: Read the integer by skipping leading zeros until a non-digit character is encountered or the end of the string is reached. If no digits were read, then the result is 0.
     4. Rounding: If the integer is out of the 32-bit signed integer range [-2^31, 2^31 - 1], then round the integer to remain in the range. Specifically, integers less than -231 should be rounded to -231, and integers greater than 231 - 1 should be rounded to 231 - 1.
     Cases: "42" -> 42, " -042" -> -42, "1337c0d3" -> 1337, "0-1" -> 0 (default to 0 since no digit after 0).
+
+    Time Complexity: O(n)
+    Space Complexity O(1)
 */
 int myAtoi(string s) {
     bool isPositive = true;
