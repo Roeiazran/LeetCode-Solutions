@@ -86,11 +86,14 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
 
 /*
     Problem: Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
-    Idea: Use the first row and columns as markers vector for the rows and columns respectively.
-    For each row and column in the submatrix M[1,1] check M[i][0] and M[0][j] respectively.
-    Also remember to check if the first row or column should be set to zero before making any changes on them.
-    Note that any zero mark on the first row and column will be currect for the final answer in any case.
-    Complexity: O(nm) where n - rows number, m - column number.
+    Idea: Use the first row and columns as markers vector for the the remaining rows and columns of the matrix.
+    We set each row i in the submatrix M[1,1] to zero if M[i][0] = 0, and we do so for the column if M[0][j] = 0.
+    We then come back to the first row and column and handle them.
+
+    Note: Any zero mark on the first row and column during marking will be currect in respect to the final answer.
+
+    Time Complexity: O(nm) Where n is the  number of rows and m is the number of columns in the input matrix.
+    Space Complexity: O(1) - We don't use and extra space. 
 */
 void setZeroes(vector<vector<int>>& matrix) {
     size_t rows = matrix.size();
@@ -132,10 +135,23 @@ void setZeroes(vector<vector<int>>& matrix) {
 
 /*
     Problem: Return all the subarrays of size 3 in nums that sums to 0.
-    Idea: For each index i fix nums[i] and check for the complement (-nums[i]) with left and right pointers.
-    If found a triplet (nums[l], nums[r], nums[i]) add it to the result and skip duplicates by advancing left and right pointers.
-    Also skip if nums[i] == nums[i + 1].
-    Complexity: O(n^2)
+
+    Idea: For each index i fix nums[i] and check in [i + 1, .. n] subarray for the complement (-nums[i])
+    with the 2sum approach. We avoid returning duplicates by advancing left and right pointers
+    when a 2Sum match is found, and by advencing the index i when two consecutive numbers are equal.
+
+    Time Complexity: O(n^2) - 2Sum takes O(n) time due to the fact that the array is sorted,
+    we computing 2Sum for each index, thus we get O(n^2) as the total time complexity.
+
+    Space Complexity: O(n^2) - We ask how many unique triplets (i, j, k) such that nums[i] + nums[j] + nums[k] = 0
+    can exists in the array. Notice that for each triplet (i,j,k) once we fixed two elements (say nums[i] and nums[j])
+    the third element is uniquely determined as nums[k] = -(nums[i] + nums[j]), and because we only store 
+    unique triplets, this means that every valid triplets is uniquely determined by a pair.
+    Therefor the total number of unique triplets is bounded by the number of pairs in thr array.
+    (Think about it as a function that takes a pair (i,j) and returns a triplet (i,j,k) such that nums[i] + nums[j] + nums[k] = 0,
+    so if you want to determine how many triplets there are you can simply find how many pairs there are)
+
+    From combinatorics the number of pair has an upper bound of O(n^2), thus the maximum number of unique triplets is O(n^2).
 */
 vector<vector<int>> threeSum(vector<int>& nums) {
     int n = nums.size(), l, r;
@@ -148,40 +164,17 @@ vector<vector<int>> threeSum(vector<int>& nums) {
         l = i + 1, r = n - 1;
         while (l < r) {
             int sum = nums[l] + nums[r] + nums[i]; 
-            if (sum == 0) { 
+            if (sum == 0) {
                 v.push_back({nums[l], nums[r], nums[i]});
                 while (l < r && nums[l] == nums[l + 1]) l++; // Skip duplicates
                 while (r > l && nums[r] == nums[r - 1]) r--; // Skip duplicates
-                l++; r--; // Advance left and right for the next pair
-            } else if (sum > 0) { // Advance right only
+                l++; r--; // Advance left and right pointer
+            } else if (sum > 0) { // Advance only the right pointer
                 r--;
             } else { // Advance left only
                 l++;
             }
         }
     }
-
     return v;
-}
-
-int main(int argc, char const *argv[])
-{
-    vector<string> v;
-
-    v.push_back("eat");
-    v.push_back("aet");
-    v.push_back("tan");
-    v.push_back("tea");
-    v.push_back("nat");
-    v.push_back("bat");
-
-    vector<vector<string>> res = groupAnagrams(v);
-
-    for (auto& s: res) {
-        for (auto& b: s) {
-            cout << b << "- - ";
-        }
-        cout << endl;
-    }
-    return 0;
 }
